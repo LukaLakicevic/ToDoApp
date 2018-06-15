@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="80dp"
     android:layout_marginTop="80dp"
-    tools:context=".screens.screens.login.LoginActivity">
+    tools:context=".ui.screens.LoginScreen.LoginActivity">
 
     <ImageView
         android:id="@+id/logo_background_login"

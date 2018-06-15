@@ -4,4 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="yellow">#FFC400</color>
+    <color name="black">#000000</color>
+    <color name="circle">#FF0000</color>
+    <color name="circle2">#AA22CC</color>
+    <color name="circle3">#11FFFF</color>
+    <color name="chosenCircle">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>
