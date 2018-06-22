@@ -3,6 +3,7 @@ package com.bignerdranch.android.todoapp.ui.screens.NewTaskScreen;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
     Button finish;
     NewContract.Presenter presenter;
     Context context;
+    Toolbar toolbar2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,14 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
         setContentView(R.layout.activity_new);
 
         findViewsById();
+        prepareToolbar();
         provide();
         setOnClickListeners();
     }
+    @Override
+    public void findViewsById() {
 
-    private void findViewsById() {
+        toolbar2 = findViewById(R.id.toolbar2);
 
         mBtn1 = findViewById(R.id.btn1);
         mBtn1.setBackgroundResource(R.drawable.chosen_circle);
@@ -47,15 +52,21 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
         newTask = findViewById(R.id.newTaskName);
         finish = findViewById(R.id.btnNewTask);
     }
-
-    private void provide() {
+    @Override
+    public void provide() {
         presenter = NewInjector.providePresenter(this);
         context = NewInjector.provideNewActivity(this);
+
     }
 
-    private void setOnClickListeners() {
+    @Override
+    public void prepareToolbar() {
+        setSupportActionBar(toolbar2);
+        toolbar2.setTitle(R.string.title2);
+    }
 
-        //Treba toolbar
+    @Override
+    public void setOnClickListeners() {
 
         mBtn1.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,6 +1,5 @@
 package com.bignerdranch.android.todoapp.ui.screens.ListScreen;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,21 +10,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bignerdranch.android.todoapp.CistoNesto;
 import com.bignerdranch.android.todoapp.R;
-import com.bignerdranch.android.todoapp.di.DataHolder;
+import com.bignerdranch.android.todoapp.di.Injectors.ToDoInjector;
 import com.bignerdranch.android.todoapp.di.ViewAdapter.Task;
 import com.bignerdranch.android.todoapp.di.ViewAdapter.TaskAdapter;
-import com.bignerdranch.android.todoapp.ui.screens.NewTaskScreen.NewActivity;
 
 import java.util.ArrayList;
 
-import static com.bignerdranch.android.todoapp.di.DataHolder.holder;
 
-public class ToDoActivity extends AppCompatActivity {
+public class ToDoActivity extends AppCompatActivity implements ToDoContract.View {
 
 
     public ArrayList<Task> taskList;
@@ -35,6 +31,11 @@ public class ToDoActivity extends AppCompatActivity {
     public TaskAdapter adapter;
     public TaskAdapter.OnItemClickListener listener;
     public Task newTask;
+    private int mMenuResource;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<SelectedItem> tempDeleteList;
+
+    private ToDoContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +46,14 @@ public class ToDoActivity extends AppCompatActivity {
 
         prepareActionBar();
 
+        prepare();
+
         prepareRecyclerView();
 
         setActionListeners();
-
     }
 
+    @Override
     public void findViewsById() {
 
         toolbar = findViewById(R.id.toolbar);
@@ -58,45 +61,46 @@ public class ToDoActivity extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
     }
 
+    @Override
+    public void prepare() {
+
+        mPresenter = ToDoInjector.provideToDoPresenter(this);
+        ToDoInjector.provideToDoActivity(this);
+    }
+
+    @Override
     public void prepareActionBar() {
 
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.title);
+        mMenuResource = R.menu.menu_delete;
     }
 
+    @Override
     public void prepareRecyclerView() {
 
         taskList = new ArrayList<Task>();
 
-
-/*
         listener = new TaskAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(String item, int pos) {
-                position = pos;
-                holder.setTask(item);
-                holder.setDhPosition(item.getPosition());
-                startActivity(new Intent(MainActivity.this,ShowToDo.class));
+            public void onItemClick(LinearLayout layout, Task item) {
+
             }
         };
-            Postaviti kad se Delete selektuje da se aktivira opcija za klikanje na textView */
+
         adapter = new TaskAdapter(taskList, listener);
         recycler.setAdapter(adapter);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-
-        taskList.add(new Task("jsaf", R.drawable.chosen_circle));
-        adapter.notifyDataSetChanged();
+        mLayoutManager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(mLayoutManager);
     }
 
+    @Override
     public void setActionListeners() {
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.setTask(null);
-                holder.setWhichPressed(1);
-                Toast.makeText(ToDoActivity.this, "Going to Task maker", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ToDoActivity.this,NewActivity.class));
+                mPresenter.addNewTask(ToDoActivity.this);
             }
         });
 
@@ -106,8 +110,8 @@ public class ToDoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu1, menu);
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(mMenuResource, menu);
+        return true;
     }
 
     @Override
@@ -115,8 +119,18 @@ public class ToDoActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.delete:
-                //Delete selected items
-                //Toast.makeText(MainActivity.this, R.string.delete_cliked, Toast.LENGTH_SHORT).show();
+                if(taskList.size()>0) {
+                    //  enableDeletionMode(true);
+                    enableDeleteOnlyMode();
+                }
+                else
+                    Toast.makeText(this, "No tasks available for deleting",
+                            Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.confirm:
+                mPresenter.applyDeletions(adapter, taskList, tempDeleteList);
+              //  enableDeletionMode(false);
+                enableReturnOnlyMode();
                 return true;
             default:
                 Toast.makeText(ToDoActivity.this, R.string.nothing, Toast.LENGTH_SHORT).show();
@@ -129,8 +143,125 @@ public class ToDoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == RESULT_OK) {
             newTask = data.getParcelableExtra("ParcelKey");
-            taskList.add(new Task("blablabla", R.drawable.chosen_circle3));
+            taskList.add(newTask);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void enableDeletionMode(final boolean isEnabled) {
+                                                                        /* Ne upotrebljava se...
+                                                                           zbog nefunkcionalnosti.
+                                                                           razlozen na 2 funkcije */
+        int isVisible = (!isEnabled) ? View.INVISIBLE : View.VISIBLE;
+        addButton.setVisibility(isVisible);                             // NE ZNAMO ZASTO MENE RADI
+        adapter.setCheckBoxesHidden(!isEnabled);                         // OVAKO A MIRKU KONTRA
+        Toast.makeText(this, "adgfhdffsdfgh", Toast.LENGTH_SHORT).show();
+        adapter.notifyDataSetChanged();
+
+        // I OVDJE JE KONTRA... ISPITATI
+        mMenuResource = !isEnabled ? R.menu.menu_confirm : R.menu.menu_delete;
+        invalidateOptionsMenu();
+
+        if(isEnabled) {
+
+            tempDeleteList = new ArrayList<>();
+            ToggleSelectOption((LinearLayout) mLayoutManager.findViewByPosition(0), taskList.get(0));
+
+            listener = new TaskAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(LinearLayout layout, Task item) {
+
+                    ToggleSelectOption(layout, item);
+                }
+            };
+        }
+        else {
+            tempDeleteList.clear();
+        }
+        adapter.setListener(listener);
+    }
+
+    @Override
+    public void enableDeleteOnlyMode() {
+
+        addButton.setVisibility(View.INVISIBLE);
+        adapter.setCheckBoxesHidden(true);
+        Toast.makeText(this, "all invisible", Toast.LENGTH_SHORT).show();
+        adapter.notifyDataSetChanged();
+
+        mMenuResource = R.menu.menu_confirm;
+        invalidateOptionsMenu();
+
+        tempDeleteList = new ArrayList<>();
+        ToggleSelectOption((LinearLayout) mLayoutManager.findViewByPosition(0), taskList.get(0));
+
+        listener = new TaskAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(LinearLayout layout, Task item) {
+
+                ToggleSelectOption(layout, item);
+            }
+        };
+        adapter.setListener(listener);
+    }
+
+    @Override
+    public void enableReturnOnlyMode() {
+
+        addButton.setVisibility(View.VISIBLE);
+        adapter.setCheckBoxesHidden(false);
+        Toast.makeText(this, "all visible", Toast.LENGTH_SHORT).show();
+        adapter.notifyDataSetChanged();
+
+        mMenuResource = R.menu.menu_delete;
+        invalidateOptionsMenu();
+
+        tempDeleteList.clear();
+        adapter.setListener(listener);
+    }
+
+    @Override
+    public void ToggleSelectOption(LinearLayout todoLayout, Task todo) {
+
+
+        SelectedItem task = new SelectedItem(todo, todoLayout);
+
+            //if(todoLayout.getSolidColor() == getResources().getColor(R.color.yellow)){
+            // nisam sazna kako da se uzme boja od ViewHoldera pa sam radio kao mirko preko niza
+        if (mPresenter.selected(tempDeleteList, todo)) {
+            todoLayout.setBackgroundResource(R.color.bg_default);
+            mPresenter.delete(tempDeleteList, todo);
+        }
+        else {
+            todoLayout.setBackgroundResource(R.color.yellow);
+            mPresenter.select(tempDeleteList, todoLayout, todo);
+        }
+    }
+
+    public static class SelectedItem {
+        private Task task;
+        private LinearLayout layout;
+
+        public SelectedItem(Task task, LinearLayout layout) {
+            this.task = task;
+            this.layout = layout;
+        }
+
+        public Task getTask() {
+            return task;
+        }
+
+        public void setTask(Task task) {
+            this.task = task;
+        }
+
+        public LinearLayout getLayout() {
+            return layout;
+        }
+
+        public void setLayout(LinearLayout layout) {
+            this.layout = layout;
         }
     }
 }

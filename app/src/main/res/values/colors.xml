@@ -10,4 +10,5 @@
     <color name="circle3">#11FFFF</color>
     <color name="chosenCircle">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="bg_default">#FAFAFA</color>
 </resources>

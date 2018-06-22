@@ -7,4 +7,6 @@
     <string name="newCreateButton">Create task</string>
     <string name="title">ToDoList Title</string>
     <string name="error_name">Unesite vise od 10 slova</string>
+    <string name="confirm">Confirm</string>
+    <string name="title2">Add Task</string>
 </resources>

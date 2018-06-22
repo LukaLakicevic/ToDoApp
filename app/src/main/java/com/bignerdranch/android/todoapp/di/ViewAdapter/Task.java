@@ -17,6 +17,14 @@ public class Task implements Parcelable {
         this.isFinished = false;
     }
 
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
+
     public Task(Parcel in) {
         this.name = in.readString();
         this.color = in.readInt();

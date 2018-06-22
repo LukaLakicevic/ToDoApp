@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -19,11 +21,14 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
+
+    private boolean mCheckBoxesHidden;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public TextView colorCircle;
         public CheckBox checkBox;
-        public int ViewPosition;
+        public LinearLayout layout;
 
         public ViewHolder (View itemView)
         {
@@ -32,36 +37,42 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             colorCircle = itemView.findViewById(R.id.color_text_view);
             name = itemView.findViewById(R.id.item_name);
             checkBox = itemView.findViewById(R.id.button_check);
+            layout = itemView.findViewById(R.id.text_layout);
         }
 
         public void bind(final Task task,final OnItemClickListener listener) {
 
-            which();
+            which(task);
             name.setText(task.getName());
             String temp = task.getName().substring(0,1).toUpperCase();
             colorCircle.setText(temp);
+
+            checkBox.setVisibility(mCheckBoxesHidden ? View.INVISIBLE : View.VISIBLE);
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    task.setFinished(isChecked);
+                }
+            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(task, getLayoutPosition());
+                    listener.onItemClick(layout, task);
                 }
             });
         }
 
-        private void which() {
-            if(DataHolder.getWhich() == 3) {
+        private void which(Task task) {
+            if(task.getColor() == 3) {
                 colorCircle.setBackgroundResource(R.drawable.circle3);
             }
-            else if(DataHolder.getWhich() == 2) {
+            else if(task.getColor() == 2) {
                 colorCircle.setBackgroundResource(R.drawable.circle2);
             }
             else
                 colorCircle.setBackgroundResource(R.drawable.circle);
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(Task item,int pos);
     }
 
     private List<Task> mTaskList;
@@ -73,6 +84,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public TaskAdapter(List<Task> taskList, OnItemClickListener listener) {
         mTaskList = taskList;
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(LinearLayout layout, Task item);
+    }
+    public void setListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -95,6 +113,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mTaskList.size();
+    }
+
+
+    public void setCheckBoxesHidden(boolean checkBoxesHidden) {
+        mCheckBoxesHidden = checkBoxesHidden;
     }
 }
 

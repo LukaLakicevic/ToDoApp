@@ -4,6 +4,10 @@ public class NewContract {
 
     public interface View {
 
+        void findViewsById();
+        void provide();
+        void prepareToolbar();
+        void setOnClickListeners();
         void resetBtns();
     }
 
