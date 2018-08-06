@@ -24,7 +24,7 @@ public class LoginPresenterimpl implements LoginContract.Presenter {
     }
 
     @Override
-    public boolean loginMetod(DataHolder holder) {
+    public boolean loginCheck(DataHolder holder) {
         if (holder.getDhUsername().equals(T_USERNAME) && holder.getDhPassword().equals(T_PASSWORD))
             return true;
         return false;

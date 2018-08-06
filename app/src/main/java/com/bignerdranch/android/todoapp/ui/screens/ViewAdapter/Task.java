@@ -1,9 +1,7 @@
-package com.bignerdranch.android.todoapp.di.ViewAdapter;
+package com.bignerdranch.android.todoapp.ui.screens.ViewAdapter;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.bignerdranch.android.todoapp.di.DataHolder;
 
 public class Task implements Parcelable {
 

@@ -1,6 +1,6 @@
 package com.bignerdranch.android.todoapp.di;
 
-import com.bignerdranch.android.todoapp.di.ViewAdapter.Task;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.Task;
 
 public class DataHolder {
     public static DataHolder holder;

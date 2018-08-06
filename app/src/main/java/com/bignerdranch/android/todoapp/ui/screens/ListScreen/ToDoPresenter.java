@@ -5,8 +5,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bignerdranch.android.todoapp.R;
-import com.bignerdranch.android.todoapp.di.ViewAdapter.Task;
-import com.bignerdranch.android.todoapp.di.ViewAdapter.TaskAdapter;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.Task;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.TaskAdapter;
 import com.bignerdranch.android.todoapp.ui.screens.NewTaskScreen.NewActivity;
 
 import java.util.ArrayList;

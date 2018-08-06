@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 if (keyCode == event.KEYCODE_ENTER) {
 
                     holder.setHolder(mUsername.getText().toString(), mPassword.getText().toString());
-                    if (presenter.loginMetod(holder)) {
+                    if (presenter.loginCheck(holder)) {
                         startActivity(new Intent(LoginActivity.this, ToDoActivity.class));
                     } else
                         Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show();

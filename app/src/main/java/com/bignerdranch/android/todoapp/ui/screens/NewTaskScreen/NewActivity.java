@@ -1,6 +1,8 @@
 package com.bignerdranch.android.todoapp.ui.screens.NewTaskScreen;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +13,12 @@ import android.widget.TextView;
 
 import com.bignerdranch.android.todoapp.R;
 import com.bignerdranch.android.todoapp.di.Injectors.NewInjector;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.Task;
 
 import static com.bignerdranch.android.todoapp.di.DataHolder.holder;
 
 public class NewActivity extends AppCompatActivity implements NewContract.View {
+
 
     TextView mBtn1;
     TextView mBtn2;
@@ -22,7 +26,7 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
     EditText newTask;
     Button finish;
     NewContract.Presenter presenter;
-    Context context;
+    // Context context;
     Toolbar toolbar2;
 
     @Override
@@ -55,7 +59,7 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
     @Override
     public void provide() {
         presenter = NewInjector.providePresenter(this);
-        context = NewInjector.provideNewActivity(this);
+        // context = NewInjector.provideNewActivity(this);
 
     }
 
@@ -103,6 +107,14 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
 
                 if(!presenter.newToDoTask(newTask.getText().toString(), holder.getWhich())) {
                     newTask.setError(getString(R.string.error_name));
+                }
+                else {
+                    Task temp;
+                    temp = new Task(newTask.getText().toString(), holder.getWhich());
+                    Intent intent = new Intent();
+                    intent.putExtra("ParcelKey", temp);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
                 }
             }
         });
