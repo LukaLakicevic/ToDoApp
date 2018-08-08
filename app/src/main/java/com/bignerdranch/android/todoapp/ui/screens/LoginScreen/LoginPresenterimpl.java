@@ -24,10 +24,14 @@ public class LoginPresenterimpl implements LoginContract.Presenter {
     }
 
     @Override
-    public boolean loginCheck(DataHolder holder) {
-        if (holder.getDhUsername().equals(T_USERNAME) && holder.getDhPassword().equals(T_PASSWORD))
-            return true;
-        return false;
-
+    public boolean loginUserCheck(DataHolder holder) {
+        return holder.getDhUsername().equals(T_USERNAME);
     }
+
+    @Override
+    public boolean loginPasswordCheck(DataHolder holder) {
+       return holder.getDhPassword().equals(T_PASSWORD);
+    }
+
+
 }
