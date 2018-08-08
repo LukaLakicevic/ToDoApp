@@ -10,6 +10,7 @@ public interface LoginContract {
 
     interface Presenter extends BasePresenter<View> {
 
+
         boolean loginUserCheck(DataHolder holder);
         boolean loginPasswordCheck(DataHolder holder);
     }

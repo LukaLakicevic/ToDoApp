@@ -51,18 +51,20 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 if (keyCode == event.KEYCODE_ENTER) {
 
                     holder.setHolder(mUsername.getText().toString(), mPassword.getText().toString());
+
                     if (presenter.loginUserCheck(holder)) {
                         if (presenter.loginPasswordCheck(holder))
                             startActivity(new Intent(LoginActivity.this, ToDoActivity.class));
                         else
-                            Toast.makeText(LoginActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                            mPassword.setError(getString(R.string.error_password));
                     } else
-                        Toast.makeText(LoginActivity.this, "Wrong username", Toast.LENGTH_SHORT).show();
+                        mUsername.setError(getString(R.string.error_username));
                 }
                 return false;
             }
         });
     }
+
 
 }
 

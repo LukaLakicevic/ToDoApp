@@ -33,5 +33,4 @@ public class LoginPresenterimpl implements LoginContract.Presenter {
        return holder.getDhPassword().equals(T_PASSWORD);
     }
 
-
 }
