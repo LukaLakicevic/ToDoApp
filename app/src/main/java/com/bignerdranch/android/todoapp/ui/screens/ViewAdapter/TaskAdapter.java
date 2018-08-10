@@ -1,6 +1,5 @@
-package com.bignerdranch.android.todoapp.di.ViewAdapter;
+package com.bignerdranch.android.todoapp.ui.screens.ViewAdapter;
 
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,13 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bignerdranch.android.todoapp.R;
-import com.bignerdranch.android.todoapp.di.DataHolder;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

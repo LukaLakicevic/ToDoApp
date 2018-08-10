@@ -2,8 +2,8 @@ package com.bignerdranch.android.todoapp.ui.screens.ListScreen;
 
 import android.widget.LinearLayout;
 
-import com.bignerdranch.android.todoapp.di.ViewAdapter.Task;
-import com.bignerdranch.android.todoapp.di.ViewAdapter.TaskAdapter;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.Task;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.TaskAdapter;
 
 import java.util.ArrayList;
 

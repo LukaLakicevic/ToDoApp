@@ -9,4 +9,6 @@
     <string name="error_name">Unesite vise od 10 slova</string>
     <string name="confirm">Confirm</string>
     <string name="title2">Add Task</string>
+    <string name="error_password">Wrong password</string>
+    <string name="error_username">Wrong username</string>
 </resources>

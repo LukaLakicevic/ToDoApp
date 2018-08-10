@@ -1,6 +1,6 @@
 package com.bignerdranch.android.todoapp.di;
 
-import com.bignerdranch.android.todoapp.di.ViewAdapter.Task;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.Task;
 
 public class DataHolder {
     public static DataHolder holder;
@@ -21,8 +21,16 @@ public class DataHolder {
         return dhUsername;
     }
 
+    public static void setDhUsername(String dhUsername) {
+        DataHolder.dhUsername = dhUsername;
+    }
+
     public static String getDhPassword() {
         return dhPassword;
+    }
+
+    public static void setDhPassword(String dhPassword) {
+        DataHolder.dhPassword = dhPassword;
     }
 
     public static DataHolder getHolder() {

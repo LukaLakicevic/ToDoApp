@@ -16,7 +16,9 @@ public class NewInjector {
         if(presenter == null) {
             presenter = new NewPresenter(view);
         }
+        presenter.setView(view);
         return presenter;
+
     }
 
     public static NewActivity getNewActivity() {

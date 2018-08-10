@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import com.bignerdranch.android.todoapp.R;
 import com.bignerdranch.android.todoapp.di.Injectors.ToDoInjector;
-import com.bignerdranch.android.todoapp.di.ViewAdapter.Task;
-import com.bignerdranch.android.todoapp.di.ViewAdapter.TaskAdapter;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.Task;
+import com.bignerdranch.android.todoapp.ui.screens.ViewAdapter.TaskAdapter;
 
 import java.util.ArrayList;
 
@@ -150,16 +150,16 @@ public class ToDoActivity extends AppCompatActivity implements ToDoContract.View
 
     @Override
     public void enableDeletionMode(final boolean isEnabled) {
-                                                                        /* Ne upotrebljava se...
-                                                                           zbog nefunkcionalnosti.
-                                                                           razlozen na 2 funkcije */
+                                                                        /* Not in use jet...
+                                                                           has 1 problem so we split
+                                                                           it in 2 methodes */
         int isVisible = (!isEnabled) ? View.INVISIBLE : View.VISIBLE;
-        addButton.setVisibility(isVisible);                             // NE ZNAMO ZASTO MENE RADI
-        adapter.setCheckBoxesHidden(!isEnabled);                         // OVAKO A MIRKU KONTRA
+        addButton.setVisibility(isVisible);                             // We dont know why it doesnt
+        adapter.setCheckBoxesHidden(!isEnabled);                         // work like Mirkos
         Toast.makeText(this, "adgfhdffsdfgh", Toast.LENGTH_SHORT).show();
         adapter.notifyDataSetChanged();
 
-        // I OVDJE JE KONTRA... ISPITATI
+        // Here is the same.... It works in reverse
         mMenuResource = !isEnabled ? R.menu.menu_confirm : R.menu.menu_delete;
         invalidateOptionsMenu();
 
@@ -228,7 +228,8 @@ public class ToDoActivity extends AppCompatActivity implements ToDoContract.View
         SelectedItem task = new SelectedItem(todo, todoLayout);
 
             //if(todoLayout.getSolidColor() == getResources().getColor(R.color.yellow)){
-            // nisam sazna kako da se uzme boja od ViewHoldera pa sam radio kao mirko preko niza
+            // Asked you how to get color from ViewHolder but you didnt answer so i took Mirkos path
+            // and finished it trough array
         if (mPresenter.selected(tempDeleteList, todo)) {
             todoLayout.setBackgroundResource(R.color.bg_default);
             mPresenter.delete(tempDeleteList, todo);
