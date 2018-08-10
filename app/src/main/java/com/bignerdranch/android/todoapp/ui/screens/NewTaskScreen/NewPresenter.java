@@ -13,9 +13,11 @@ public class NewPresenter implements NewContract.Presenter{
 
     public NewPresenter(NewContract.View view) { this.view = view; }
 
-    @Override
-    public boolean newToDoTask(String name, int color) {
+    int minChar = 10;
 
-        return (name.length() > 10);
+    @Override
+    public void checkTask(String text) {
+        if (text.length() < minChar) view.nameError();
+        else view.finishWithNewTask();
     }
 }

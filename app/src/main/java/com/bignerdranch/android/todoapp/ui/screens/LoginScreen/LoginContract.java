@@ -6,12 +6,15 @@ import com.bignerdranch.android.todoapp.ui.base.BasePresenter;
 public interface LoginContract {
     interface View {
 
+        void checkLogin();
+        void passwordError();
+        void usernameError();
+        void unlock();
     }
 
     interface Presenter extends BasePresenter<View> {
 
-
-        boolean loginUserCheck(DataHolder holder);
-        boolean loginPasswordCheck(DataHolder holder);
+        void loginUserCheck(DataHolder holder);
+        void loginPasswordCheck(DataHolder holder);
     }
 }

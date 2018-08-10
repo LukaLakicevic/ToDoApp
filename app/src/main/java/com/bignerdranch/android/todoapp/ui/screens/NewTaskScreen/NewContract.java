@@ -9,10 +9,12 @@ public class NewContract {
         void prepareToolbar();
         void setOnClickListeners();
         void resetBtns();
+        void nameError();
+        void finishWithNewTask();
     }
 
     public interface Presenter {
+        void checkTask(String text);
 
-        boolean newToDoTask(String name, int color);
     }
 }

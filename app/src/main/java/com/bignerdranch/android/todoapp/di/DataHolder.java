@@ -21,8 +21,16 @@ public class DataHolder {
         return dhUsername;
     }
 
+    public static void setDhUsername(String dhUsername) {
+        DataHolder.dhUsername = dhUsername;
+    }
+
     public static String getDhPassword() {
         return dhPassword;
+    }
+
+    public static void setDhPassword(String dhPassword) {
+        DataHolder.dhPassword = dhPassword;
     }
 
     public static DataHolder getHolder() {

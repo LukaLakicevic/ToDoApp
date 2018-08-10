@@ -51,18 +51,32 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 if (keyCode == event.KEYCODE_ENTER) {
 
                     holder.setHolder(mUsername.getText().toString(), mPassword.getText().toString());
-
-                    if (presenter.loginUserCheck(holder)) {
-                        if (presenter.loginPasswordCheck(holder))
-                            startActivity(new Intent(LoginActivity.this, ToDoActivity.class));
-                        else
-                            mPassword.setError(getString(R.string.error_password));
-                    } else
-                        mUsername.setError(getString(R.string.error_username));
+                    checkLogin();
                 }
                 return false;
             }
         });
+    }
+
+
+    @Override
+    public void checkLogin() {
+        presenter.loginUserCheck(holder);
+    }
+
+    @Override
+    public void usernameError() {
+        mUsername.setError(getString(R.string.error_username));
+    }
+
+    @Override
+    public void unlock() {
+        startActivity(new Intent(LoginActivity.this, ToDoActivity.class));
+    }
+
+    @Override
+    public void passwordError() {
+        mPassword.setError(getString(R.string.error_password));
     }
 
 

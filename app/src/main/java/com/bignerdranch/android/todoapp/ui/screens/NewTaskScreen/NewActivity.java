@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bignerdranch.android.todoapp.R;
 import com.bignerdranch.android.todoapp.di.Injectors.NewInjector;
@@ -59,7 +60,6 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
     @Override
     public void provide() {
         presenter = NewInjector.providePresenter(this);
-        // context = NewInjector.provideNewActivity(this);
 
     }
 
@@ -105,17 +105,7 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
             @Override
             public void onClick(View v) {
 
-                if(!presenter.newToDoTask(newTask.getText().toString(), holder.getWhich())) {
-                    newTask.setError(getString(R.string.error_name));
-                }
-                else {
-                    Task temp;
-                    temp = new Task(newTask.getText().toString(), holder.getWhich());
-                    Intent intent = new Intent();
-                    intent.putExtra("ParcelKey", temp);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
+                presenter.checkTask(newTask.getText().toString());
             }
         });
     }
@@ -128,5 +118,21 @@ public class NewActivity extends AppCompatActivity implements NewContract.View {
             mBtn2.setBackgroundResource(R.drawable.circle2);
     if (holder.getWhich() == 3)
             mBtn3.setBackgroundResource(R.drawable.circle3);
+    }
+
+    @Override
+    public void nameError() {
+        newTask.setError(getString(R.string.error_name));
+    }
+
+    @Override
+    public void finishWithNewTask() {
+
+        Task temp;
+        temp = new Task(newTask.getText().toString(), holder.getWhich());
+        Intent intent = new Intent();
+        intent.putExtra("ParcelKey", temp);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 }
