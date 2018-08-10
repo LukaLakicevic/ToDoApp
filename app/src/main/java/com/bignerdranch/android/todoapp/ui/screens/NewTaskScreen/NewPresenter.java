@@ -17,7 +17,14 @@ public class NewPresenter implements NewContract.Presenter{
 
     @Override
     public void checkTask(String text) {
-        if (text.length() < minChar) view.nameError();
-        else view.finishWithNewTask();
+        if (text.length() < minChar)
+            view.nameError();
+        else
+            view.finishWithNewTask();
+    }
+
+    @Override
+    public void setView(NewContract.View view) {
+        this.view = view;
     }
 }

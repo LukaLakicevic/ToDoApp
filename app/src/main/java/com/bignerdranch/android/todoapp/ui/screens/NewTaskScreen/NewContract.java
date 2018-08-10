@@ -16,5 +16,6 @@ public class NewContract {
     public interface Presenter {
         void checkTask(String text);
 
+        void setView(View view);
     }
 }
